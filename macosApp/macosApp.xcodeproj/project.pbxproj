@@ -15,6 +15,8 @@
 		90B5BC7666FBCFE3490D29F6 /* macosAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74636E0A6C7B2ECA5BDFFA /* macosAppApp.swift */; };
 		92856EEBFBBBD97950069E6D /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491328310628456A3E60BA06 /* Config.swift */; };
 		B6094D3B2E1C93837B5DDF73 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62E0B4A140B9A7BFC4293145 /* Cocoa.framework */; };
+		BFD58B112FC323DE008A40F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFD58B102FC323DE008A40F4 /* Assets.xcassets */; };
+		BFD58B122FC323DE008A40F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFD58B102FC323DE008A40F4 /* Assets.xcassets */; };
 		E2F5A301C0920EAFEAD3DF9B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 876F82A2338AB3F204A09F60 /* SwiftUI.framework */; };
 		E8D5458BDE19394C575C8A78 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491328310628456A3E60BA06 /* Config.swift */; };
 		EFF6B4A9CD29C8AEF030B30D /* SalaryWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -56,6 +58,7 @@
 		876F82A2338AB3F204A09F60 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		BD74636E0A6C7B2ECA5BDFFA /* macosAppApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = macosAppApp.swift; sourceTree = "<group>"; };
 		BFC85680DE14681B99680295 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		BFD58B102FC323DE008A40F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C1DF19E2ABFE7D80A41441FB /* SalaryWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = SalaryWidget.entitlements; sourceTree = "<group>"; };
 		EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SalaryWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -142,6 +145,7 @@
 		EF11BF9EA97B2149962A59E7 = {
 			isa = PBXGroup;
 			children = (
+				BFD58B102FC323DE008A40F4 /* Assets.xcassets */,
 				E9D7CA690C6E63C55479C6D3 /* Products */,
 				447E19E867D591A2294F3E33 /* Frameworks */,
 				1DE4C701095807AE4F6CA339 /* macosApp */,
@@ -237,6 +241,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFD58B112FC323DE008A40F4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +249,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFD58B122FC323DE008A40F4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -365,17 +371,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = macosApp/macosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PXL9279SFY;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "我爱上班";
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
@@ -459,17 +469,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = macosApp/macosApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PXL9279SFY;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "我爱上班";
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
