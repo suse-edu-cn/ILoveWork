@@ -202,13 +202,11 @@ struct SalaryWidgetView: View {
     }
 
     private var progressRatio: Double {
-        let totalElapsed = entry.formula.workEnd.timeIntervalSince(entry.formula.workStart)
-        let lunchElapsed = entry.formula.lunchEnd.timeIntervalSince(entry.formula.lunchStart)
-        let validTotalSeconds = max(0, totalElapsed - max(0, lunchElapsed))
-        
-        let dailySalary = entry.formula.salaryPerSecond * validTotalSeconds
-        guard dailySalary > 0 else { return 0 }
-        return min(entry.earnedAmount / dailySalary, 1.0)
+        if entry.dayType != .workday { return 0 }
+        if entry.secondsUntilOff <= 0 { return 1.0 }
+
+        guard entry.formula.dailySalary > 0 else { return 0 }
+        return min(entry.earnedAmount / entry.formula.dailySalary, 1.0)
     }
 }
 
@@ -216,7 +214,7 @@ struct SalaryWidgetView: View {
 
 @main
 struct SalaryWidget: Widget {
-    let kind = "SalaryWidget"
+    let kind = "SalaryWidgetV2"
 
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: SalaryProvider()) { entry in

@@ -47,15 +47,22 @@ private let dateFormatter: DateFormatter = {
     return df
 }()
 
-// MARK: - File-based persistence via App Group (shared between App + Widget)
-
 enum ConfigStore {
-    static let appGroup = "group.com.suseoaa.ilovework"
+    static var configURL: URL {
+        let bundleID = Bundle.main.bundleIdentifier ?? ""
+        if bundleID == "com.suseoaa.ilovework.macos.SalaryWidget" {
+            // 小组件被强制沙盒化，只能读写自己沙盒内的 Documents 目录
+            return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent("ilovework_config.txt")
+        } else {
+            // 主程序（取消沙盒后）具有所有权限，直接跨界写入到小组件的沙盒目录中
+            let home = FileManager.default.homeDirectoryForCurrentUser
+            return home.appendingPathComponent("Library/Containers/com.suseoaa.ilovework.macos.SalaryWidget/Data/Documents/ilovework_config.txt")
+        }
+    }
 
     static func load() -> WorkConfig {
         var cfg = WorkConfig()
-        guard let sharedDefaults = UserDefaults(suiteName: appGroup),
-              let content = sharedDefaults.string(forKey: "ilovework_config_data") else {
+        guard let content = try? String(contentsOf: configURL, encoding: .utf8) else {
             return cfg
         }
 
@@ -124,10 +131,15 @@ enum ConfigStore {
         let makeupDaysStr = cfg.statutoryMakeupDays.joined(separator: ",")
         lines.append("statutoryMakeupDays=\(makeupDaysStr)")
         lines.append("isRestDayPaid=\(cfg.isRestDayPaid)")
-        if let sharedDefaults = UserDefaults(suiteName: appGroup) {
-            sharedDefaults.set(lines.joined(separator: "\n"), forKey: "ilovework_config_data")
-            sharedDefaults.synchronize() // 强制同步至磁盘，防止小组件读取延迟
+        
+        let url = configURL
+        let dir = url.deletingLastPathComponent()
+        if !FileManager.default.fileExists(atPath: dir.path) {
+            try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         }
+        
+        let content = lines.joined(separator: "\n")
+        try? content.write(to: url, atomically: true, encoding: .utf8)
     }
 
     enum DayType {
@@ -139,6 +151,7 @@ enum ConfigStore {
     // MARK: - Pre-compute salary formula (called once on save)
     struct SalaryFormula {
         let salaryPerSecond: Double
+        let dailySalary: Double
         let workStart: Date
         let workEnd: Date
         let lunchStart: Date
@@ -190,6 +203,7 @@ enum ConfigStore {
 
         let dayType = getDayType(date: date, cfg: cfg)
         return SalaryFormula(salaryPerSecond: sps,
+                             dailySalary: dailySalary,
                              workStart: ws, workEnd: we,
                              lunchStart: ls, lunchEnd: le,
                              dayType: dayType)

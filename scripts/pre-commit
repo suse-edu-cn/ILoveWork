@@ -8,7 +8,7 @@ if git diff --cached --name-only | grep -q 'macosApp/macosApp.xcodeproj/project.
         echo "🍎 [pre-commit hook] 检测到 macOS 版本号发生变更，正在本地自动编译并打包 macOS 应用..."
         
         # 编译 macOS app
-        xcodebuild -project macosApp/macosApp.xcodeproj -scheme macosApp -configuration Release clean build SYMROOT="$(PWD)/macosApp/build" > /dev/null
+        xcodebuild -project macosApp/macosApp.xcodeproj -scheme macosApp -configuration Release clean build SYMROOT="$(PWD)/macosApp/build" CODE_SIGN_IDENTITY="-" > /dev/null
         
         if [ $? -ne 0 ]; then
             echo "❌ [pre-commit hook] macOS 编译失败！请检查 Xcode 工程代码。本次 commit 已终止。"
