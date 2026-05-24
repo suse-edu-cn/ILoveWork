@@ -31,6 +31,9 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.datastore.preferences.core.longPreferencesKey
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import com.suseoaa.ilovework.ui.updater.UpdateHistoryScreen
 
 @Composable
 fun SettingsScreen(viewModel: SettingsViewModel, onAddWidgetClick: () -> Unit = {}) {
@@ -38,6 +41,16 @@ fun SettingsScreen(viewModel: SettingsViewModel, onAddWidgetClick: () -> Unit = 
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var syncStatus by remember { mutableStateOf("") }
+    var showUpdaterScreen by remember { mutableStateOf(false) }
+
+    if (showUpdaterScreen) {
+        Dialog(
+            onDismissRequest = { showUpdaterScreen = false },
+            properties = DialogProperties(usePlatformDefaultWidth = false)
+        ) {
+            UpdateHistoryScreen(onBack = { showUpdaterScreen = false })
+        }
+    }
     
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
@@ -268,6 +281,27 @@ fun SettingsScreen(viewModel: SettingsViewModel, onAddWidgetClick: () -> Unit = 
             }
             TimePickerRow("结束", state.lunchEndHour, state.lunchEndMinute) { h, m ->
                 viewModel.dispatch(SettingsIntent.UpdateLunchEnd(h, m))
+            }
+        }
+
+        // Software Update
+        CardItem {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column {
+                    Text("软件更新", style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        "检查更新与历史日志",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Button(onClick = { showUpdaterScreen = true }) {
+                    Text("检查更新")
+                }
             }
         }
 
