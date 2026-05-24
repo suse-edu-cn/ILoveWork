@@ -37,6 +37,7 @@ struct WorkConfig {
     var statutoryHolidays: Set<String> = [] // YYYY-MM-DD
     var statutoryMakeupDays: Set<String> = [] // YYYY-MM-DD
     var isRestDayPaid: Bool = false
+    var payday: Int = 10
 }
 
 // MARK: - Formatter Helper
@@ -105,6 +106,7 @@ enum ConfigStore {
         }
         
         if let v = d["isRestDayPaid"].flatMap(Bool.init) { cfg.isRestDayPaid = v }
+        if let v = d["payday"].flatMap(Int.init) { cfg.payday = v }
 
         return cfg
     }
@@ -131,6 +133,7 @@ enum ConfigStore {
         let makeupDaysStr = cfg.statutoryMakeupDays.joined(separator: ",")
         lines.append("statutoryMakeupDays=\(makeupDaysStr)")
         lines.append("isRestDayPaid=\(cfg.isRestDayPaid)")
+        lines.append("payday=\(cfg.payday)")
         
         let url = configURL
         let dir = url.deletingLastPathComponent()

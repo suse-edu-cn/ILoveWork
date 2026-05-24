@@ -25,6 +25,7 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.currentState
 import androidx.datastore.preferences.core.Preferences
+import java.util.Calendar
 
 class SalaryWidget : GlanceAppWidget() {
     override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
@@ -91,8 +92,41 @@ class SalaryWidget : GlanceAppWidget() {
                             style = TextStyle(color = ColorProvider(Color.Gray))
                         )
                     }
+                    
+                    Spacer(modifier = GlanceModifier.height(8.dp))
+                    val daysUntil = getDaysUntilPayday(config.payday)
+                    Text(
+                        text = if (daysUntil == 0) "💰 今天发工资！" else "距发薪: ${daysUntil}天",
+                        style = TextStyle(color = ColorProvider(Color(0xFF2196F3)), fontWeight = FontWeight.Bold)
+                    )
                 }
             }
         }
+    }
+    
+    private fun getDaysUntilPayday(payday: Int): Int {
+        val cal = Calendar.getInstance()
+        val today = Calendar.getInstance()
+        
+        val currentDay = cal.get(Calendar.DAY_OF_MONTH)
+        if (currentDay > payday) {
+            cal.add(Calendar.MONTH, 1)
+        }
+        
+        val maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
+        cal.set(Calendar.DAY_OF_MONTH, minOf(payday, maxDay))
+        
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.set(Calendar.MINUTE, 0)
+        cal.set(Calendar.SECOND, 0)
+        cal.set(Calendar.MILLISECOND, 0)
+        
+        today.set(Calendar.HOUR_OF_DAY, 0)
+        today.set(Calendar.MINUTE, 0)
+        today.set(Calendar.SECOND, 0)
+        today.set(Calendar.MILLISECOND, 0)
+        
+        val diffMillis = cal.timeInMillis - today.timeInMillis
+        return (diffMillis / (1000 * 60 * 60 * 24)).toInt()
     }
 }

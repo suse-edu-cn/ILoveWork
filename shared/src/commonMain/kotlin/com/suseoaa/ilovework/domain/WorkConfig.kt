@@ -22,5 +22,6 @@ data class WorkConfig(
     val customWorkDays: Set<Int> = setOf(1, 2, 3, 4, 5), // 1=Mon, 7=Sun
     val statutoryHolidays: Set<String> = emptySet(), // Format: YYYY-MM-DD
     val statutoryMakeupDays: Set<String> = emptySet(), // Format: YYYY-MM-DD
-    val isRestDayPaid: Boolean = false // Whether regular rest days are paid
+    val isRestDayPaid: Boolean = false, // Whether regular rest days are paid
+    val payday: Int = 10
 )

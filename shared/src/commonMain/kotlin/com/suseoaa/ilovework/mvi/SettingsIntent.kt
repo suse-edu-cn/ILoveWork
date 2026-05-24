@@ -12,5 +12,6 @@ sealed class SettingsIntent {
     data class UpdateCustomWorkDays(val days: Set<Int>) : SettingsIntent()
     data class UpdateStatutoryHolidays(val holidays: Set<String>, val makeupDays: Set<String>) : SettingsIntent()
     data class UpdateIsRestDayPaid(val isPaid: Boolean) : SettingsIntent()
+    data class UpdatePayday(val day: Int) : SettingsIntent()
     object SaveConfig : SettingsIntent()
 }

@@ -20,6 +20,7 @@ class ConfigViewModel {
     var statutoryHolidays: Set<String>
     var statutoryMakeupDays: Set<String>
     var isRestDayPaid: Bool
+    var payday: Int
     
     var saveStatus: String = ""
     var syncStatus: String = ""
@@ -40,6 +41,7 @@ class ConfigViewModel {
         statutoryHolidays = cfg.statutoryHolidays
         statutoryMakeupDays = cfg.statutoryMakeupDays
         isRestDayPaid   = cfg.isRestDayPaid
+        payday          = cfg.payday
     }
 
     func save() {
@@ -57,7 +59,8 @@ class ConfigViewModel {
             customWorkDays:  customWorkDays,
             statutoryHolidays: statutoryHolidays,
             statutoryMakeupDays: statutoryMakeupDays,
-            isRestDayPaid:   isRestDayPaid
+            isRestDayPaid:   isRestDayPaid,
+            payday:          payday
         )
         ConfigStore.save(cfg)
         WidgetCenter.shared.reloadAllTimelines()
@@ -168,6 +171,23 @@ struct ContentView: View {
                             .textFieldStyle(.roundedBorder)
                             .frame(width: 130)
                         Text("元/月")
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.top, 6)
+                }
+
+                // Payday
+                GroupBox(label: Label("发薪日设置", systemImage: "calendar.badge.clock")) {
+                    HStack {
+                        Text("每月发薪日")
+                        Spacer()
+                        Stepper("", value: $vm.payday, in: 1...31)
+                            .labelsHidden()
+                        TextField("", value: $vm.payday, format: .number)
+                            .multilineTextAlignment(.trailing)
+                            .textFieldStyle(.roundedBorder)
+                            .frame(width: 40)
+                        Text("号")
                             .foregroundStyle(.secondary)
                     }
                     .padding(.top, 6)

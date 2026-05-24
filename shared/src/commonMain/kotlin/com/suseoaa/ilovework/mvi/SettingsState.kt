@@ -18,6 +18,7 @@ data class SettingsState(
     val statutoryHolidays: Set<String> = emptySet(),
     val statutoryMakeupDays: Set<String> = emptySet(),
     val isRestDayPaid: Boolean = false,
+    val payday: Int = 10,
     val isSaved: Boolean = false
 ) {
     fun toWorkConfig(): WorkConfig = WorkConfig(
@@ -34,7 +35,8 @@ data class SettingsState(
         customWorkDays = customWorkDays,
         statutoryHolidays = statutoryHolidays,
         statutoryMakeupDays = statutoryMakeupDays,
-        isRestDayPaid = isRestDayPaid
+        isRestDayPaid = isRestDayPaid,
+        payday = payday
     )
 
     companion object {
@@ -52,7 +54,8 @@ data class SettingsState(
             customWorkDays = config.customWorkDays,
             statutoryHolidays = config.statutoryHolidays,
             statutoryMakeupDays = config.statutoryMakeupDays,
-            isRestDayPaid = config.isRestDayPaid
+            isRestDayPaid = config.isRestDayPaid,
+            payday = config.payday
         )
     }
 }

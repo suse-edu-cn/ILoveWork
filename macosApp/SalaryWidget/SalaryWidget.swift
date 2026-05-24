@@ -12,18 +12,19 @@ struct SalaryEntry: TimelineEntry {
     let dayType: ConfigStore.DayType
     let hourlyWage: Double
     let secondsUntilOff: TimeInterval
+    let daysUntilPayday: Int
 }
 
 // MARK: - Timeline Provider
 
 struct SalaryProvider: TimelineProvider {
     func placeholder(in context: Context) -> SalaryEntry {
-        makeEntry(date: Date(), formula: ConfigStore.buildFormula(from: WorkConfig()))
+        makeEntry(date: Date(), formula: ConfigStore.buildFormula(from: WorkConfig()), cfg: WorkConfig())
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SalaryEntry) -> Void) {
         let cfg = ConfigStore.load()
-        completion(makeEntry(date: Date(), formula: ConfigStore.buildFormula(from: cfg)))
+        completion(makeEntry(date: Date(), formula: ConfigStore.buildFormula(from: cfg), cfg: cfg))
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<SalaryEntry>) -> Void) {
@@ -37,14 +38,14 @@ struct SalaryProvider: TimelineProvider {
         for minuteOffset in 0..<120 {
             let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: now)!
             let formula = ConfigStore.buildFormula(from: cfg, on: entryDate)
-            entries.append(makeEntry(date: entryDate, formula: formula))
+            entries.append(makeEntry(date: entryDate, formula: formula, cfg: cfg))
         }
 
         // .atEnd: WidgetKit calls getTimeline again once all 120 entries are consumed (~2 hours).
         completion(Timeline(entries: entries, policy: .atEnd))
     }
 
-    private func makeEntry(date: Date, formula: ConfigStore.SalaryFormula) -> SalaryEntry {
+    private func makeEntry(date: Date, formula: ConfigStore.SalaryFormula, cfg: WorkConfig) -> SalaryEntry {
         let (earned, isWorking, dayType, hourlyWage, secondsUntilOff) = formula.earned(at: date)
         return SalaryEntry(
             date: date,
@@ -53,8 +54,36 @@ struct SalaryProvider: TimelineProvider {
             isWorking: isWorking,
             dayType: dayType,
             hourlyWage: hourlyWage,
-            secondsUntilOff: secondsUntilOff
+            secondsUntilOff: secondsUntilOff,
+            daysUntilPayday: computeDaysUntilPayday(payday: cfg.payday, from: date)
         )
+    }
+    
+    private func computeDaysUntilPayday(payday: Int, from date: Date) -> Int {
+        let cal = Calendar.current
+        let currentDay = cal.component(.day, from: date)
+        
+        var targetMonth = cal.component(.month, from: date)
+        var targetYear = cal.component(.year, from: date)
+        
+        if currentDay > payday {
+            targetMonth += 1
+            if targetMonth > 12 {
+                targetMonth = 1
+                targetYear += 1
+            }
+        }
+        
+        var comps = DateComponents(year: targetYear, month: targetMonth, day: payday)
+        if !comps.isValidDate(in: cal) {
+            let range = cal.range(of: .day, in: .month, for: cal.date(from: DateComponents(year: targetYear, month: targetMonth))!)!
+            comps.day = range.count
+        }
+        let targetDate = cal.date(from: comps)!
+        let startOfToday = cal.startOfDay(for: date)
+        let startOfTarget = cal.startOfDay(for: targetDate)
+        
+        return cal.dateComponents([.day], from: startOfToday, to: startOfTarget).day ?? 0
     }
 }
 
@@ -97,13 +126,13 @@ struct SalaryWidgetView: View {
 
     @ViewBuilder
     var smallView: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 4) {
             HStack(spacing: 4) {
                 Circle()
                     .fill(entry.isWorking ? .green : .orange)
-                    .frame(width: 7, height: 7)
+                    .frame(width: 6, height: 6)
                 Text(statusLabel)
-                    .font(.caption2)
+                    .font(.system(size: 10))
                     .foregroundStyle(textSecondary)
             }
 
@@ -117,9 +146,15 @@ struct SalaryWidgetView: View {
                 .monospacedDigit())
             .foregroundStyle(textPrimary)
 
-            Text(String(format: "时薪: ¥%.2f", entry.hourlyWage))
-                .font(.caption2)
-                .foregroundStyle(textSecondary)
+            HStack(spacing: 6) {
+                Text(String(format: "时薪: ¥%.2f", entry.hourlyWage))
+                    .font(.system(size: 10))
+                    .foregroundStyle(textSecondary)
+                    
+                Text(entry.daysUntilPayday == 0 ? "💰 发薪啦" : "距发薪: \(entry.daysUntilPayday)天")
+                    .font(.system(size: 10).bold())
+                    .foregroundStyle(.blue)
+            }
 
             if let countdown = countdownText {
                 Text(countdown)
@@ -140,7 +175,7 @@ struct SalaryWidgetView: View {
     @ViewBuilder
     var mediumView: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {
                     Circle()
                         .fill(entry.isWorking ? .green : .orange)
@@ -178,16 +213,30 @@ struct SalaryWidgetView: View {
 
             Spacer()
 
-            ZStack {
-                Circle()
-                    .stroke(textSecondary.opacity(0.2), lineWidth: 4)
-                Circle()
-                    .trim(from: 0, to: progressRatio)
-                    .stroke(entry.isWorking ? Color.green : Color.orange,
-                            style: StrokeStyle(lineWidth: 4, lineCap: .round))
-                    .rotationEffect(.degrees(-90))
+            VStack(spacing: 4) {
+                ZStack {
+                    Circle()
+                        .stroke(textSecondary.opacity(0.2), lineWidth: 4)
+                    Circle()
+                        .trim(from: 0, to: paydayProgressRatio)
+                        .stroke(Color.blue, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                        .rotationEffect(.degrees(-90))
+                    
+                    VStack(spacing: -2) {
+                        Text("\(entry.daysUntilPayday)")
+                            .font(.system(size: 16, weight: .bold, design: .rounded))
+                            .foregroundStyle(entry.daysUntilPayday == 0 ? .green : textPrimary)
+                        Text("天")
+                            .font(.system(size: 8))
+                            .foregroundStyle(textSecondary)
+                    }
+                }
+                .frame(width: 44, height: 44)
+                
+                Text("发薪倒计时")
+                    .font(.system(size: 9))
+                    .foregroundStyle(textSecondary)
             }
-            .frame(width: 44, height: 44)
         }
         .padding(.horizontal, 4)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -207,6 +256,13 @@ struct SalaryWidgetView: View {
 
         guard entry.formula.dailySalary > 0 else { return 0 }
         return min(entry.earnedAmount / entry.formula.dailySalary, 1.0)
+    }
+
+    private var paydayProgressRatio: Double {
+        if entry.daysUntilPayday == 0 { return 1.0 }
+        // 粗略以 30 天作为一整个周期的基数来计算圆环比例
+        let ratio = 1.0 - (Double(entry.daysUntilPayday) / 30.0)
+        return max(0.0, min(ratio, 1.0))
     }
 }
 

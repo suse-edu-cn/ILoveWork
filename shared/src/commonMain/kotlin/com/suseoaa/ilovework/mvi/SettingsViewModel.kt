@@ -44,6 +44,9 @@ class SettingsViewModel(private val repository: ConfigRepository) {
             is SettingsIntent.UpdateIsRestDayPaid ->
                 _state.update { it.copy(isRestDayPaid = intent.isPaid, isSaved = false) }
 
+            is SettingsIntent.UpdatePayday ->
+                _state.update { it.copy(payday = intent.day, isSaved = false) }
+
             is SettingsIntent.SaveConfig -> {
                 val config = _state.value.toWorkConfig()
                 repository.saveWorkConfig(config)

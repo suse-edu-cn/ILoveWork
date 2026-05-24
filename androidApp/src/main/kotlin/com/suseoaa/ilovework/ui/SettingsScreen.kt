@@ -100,6 +100,36 @@ fun SettingsScreen(viewModel: SettingsViewModel, onAddWidgetClick: () -> Unit = 
             )
         }
 
+        // Payday
+        CardItem {
+            Text("发薪日设置", style = MaterialTheme.typography.titleMedium)
+            
+            var paydayStr by remember { mutableStateOf(state.payday.toString()) }
+            
+            LaunchedEffect(state.payday) {
+                if (paydayStr.toIntOrNull() != state.payday) {
+                    paydayStr = state.payday.toString()
+                }
+            }
+
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text("每月发薪日：")
+                OutlinedTextField(
+                    value = paydayStr,
+                    onValueChange = { v ->
+                        val filtered = v.filter { it.isDigit() }
+                        paydayStr = filtered
+                        val p = filtered.toIntOrNull()
+                        if (p != null && p in 1..31) {
+                            viewModel.dispatch(SettingsIntent.UpdatePayday(p))
+                        }
+                    },
+                    label = { Text("号") },
+                    modifier = Modifier.width(100.dp)
+                )
+            }
+        }
+
         // Work Mode
         CardItem {
             Text("工作模式", style = MaterialTheme.typography.titleMedium)
