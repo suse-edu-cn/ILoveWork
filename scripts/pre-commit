@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# 检查是否有对 macOS 工程文件的暂存修改
+if git diff --cached --name-only | grep -q 'macosApp/macosApp.xcodeproj/project.pbxproj'; then
+    
+    # 检查其中是否包含了 MARKETING_VERSION (版本号) 的修改
+    if git diff --cached 'macosApp/macosApp.xcodeproj/project.pbxproj' | grep -q '^[+-].*MARKETING_VERSION'; then
+        echo "🍎 [pre-commit hook] 检测到 macOS 版本号发生变更，正在本地自动编译并打包 macOS 应用..."
+        
+        # 编译 macOS app
+        xcodebuild -project macosApp/macosApp.xcodeproj -scheme macosApp -configuration Release clean build SYMROOT="$(PWD)/macosApp/build" > /dev/null
+        
+        if [ $? -ne 0 ]; then
+            echo "❌ [pre-commit hook] macOS 编译失败！请检查 Xcode 工程代码。本次 commit 已终止。"
+            exit 1
+        fi
+        
+        echo "✅ [pre-commit hook] 编译成功，正在打包..."
+        
+        mkdir -p macos_builds
+        
+        # 提取版本号用于命名
+        MAC_VERSION=$(grep 'MARKETING_VERSION' macosApp/macosApp.xcodeproj/project.pbxproj | head -n 1 | awk -F'=' '{print $2}' | tr -d ' ;"')
+        ZIP_NAME="我爱上班-macOS-v${MAC_VERSION}.zip"
+        
+        APP_NAME=$(ls -d macosApp/build/Release/*.app | head -n 1)
+        
+        if [ -n "$APP_NAME" ]; then
+            # 压缩成 zip
+            ditto -c -k --sequesterRsrc --keepParent "$APP_NAME" "macos_builds/$ZIP_NAME"
+            
+            # 删除旧版本 zip 并从 git 暂存区移除（保持仓库体积小）
+            find macos_builds -name "*.zip" ! -name "$ZIP_NAME" -type f -exec git rm -f {} + 2>/dev/null
+            
+            # 自动将新生成的 zip 添加到本次 commit 中
+            git add "macos_builds/$ZIP_NAME"
+            
+            echo "🎉 [pre-commit hook] 已自动将最新版本的 $ZIP_NAME 添加到本次 commit 中！"
+        else
+            echo "❌ [pre-commit hook] 未找到生成的 .app 文件，打包失败！本次 commit 已终止。"
+            exit 1
+        fi
+    fi
+fi
+
+# 正常放行 commit
+exit 0

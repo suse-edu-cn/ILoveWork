@@ -1,0 +1,115 @@
+name: Release MacOS & Android
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'androidApp/build.gradle.kts'
+      - 'macosApp/macosApp.xcodeproj/project.pbxproj'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest # 因为不需要编译 macOS，改回 Ubuntu 更快更稳定
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if Version Changed
+        id: check_version
+        run: |
+          # 提取 Android 版本
+          if [ -f "androidApp/build.gradle.kts" ]; then
+            ANDROID_VERSION=$(grep 'versionName =' androidApp/build.gradle.kts | head -n 1 | awk -F'"' '{print $2}')
+          else
+            ANDROID_VERSION="unknown"
+          fi
+          
+          # 提取 macOS 版本
+          if [ -f "macosApp/macosApp.xcodeproj/project.pbxproj" ]; then
+            MAC_VERSION=$(grep 'MARKETING_VERSION' macosApp/macosApp.xcodeproj/project.pbxproj | head -n 1 | awk -F'=' '{print $2}' | tr -d ' ;"')
+          else
+            MAC_VERSION="unknown"
+          fi
+          
+          echo "Android Version: $ANDROID_VERSION"
+          echo "macOS Version: $MAC_VERSION"
+          
+          TAG_NAME="v${MAC_VERSION}_${ANDROID_VERSION}"
+          
+          if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME"; then
+            echo "Tag $TAG_NAME 已经存在，说明版本没有更新，跳过。"
+            echo "changed=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          echo "检测到新版本，将构建并发布 $TAG_NAME"
+          echo "changed=true" >> $GITHUB_OUTPUT
+          echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
+
+      - name: Generate Changelog
+        if: steps.check_version.outputs.changed == 'true'
+        id: changelog
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          if [ -z "$PREV_TAG" ]; then
+            LOGS=$(git log --no-merges --pretty=format:"- %s")
+          else
+            LOGS=$(git log $PREV_TAG..HEAD --no-merges --pretty=format:"- %s")
+          fi
+          
+          echo "### 更新内容" > changelog.txt
+          echo "$LOGS" >> changelog.txt
+          cat changelog.txt
+
+      - name: Setup Java
+        if: steps.check_version.outputs.changed == 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17' # Android 编译推荐 17
+          cache: 'gradle'
+
+      - name: Decode Android Keystore
+        if: steps.check_version.outputs.changed == 'true'
+        env:
+          ENCODED_KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
+        run: |
+          echo $ENCODED_KEYSTORE | base64 -d > $RUNNER_TEMP/keystore.jks
+
+      - name: Build Android APK
+        if: steps.check_version.outputs.changed == 'true'
+        env:
+          KEYSTORE_FILE_PATH: ${{ runner.temp }}/keystore.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon :androidApp:assembleRelease
+          
+          APK_DIR="androidApp/build/outputs/apk/release"
+          find $APK_DIR -name "*.apk" -print0 | while IFS= read -r -d '' file; do
+            mv "$file" "$APK_DIR/我爱上班-Android-${{ steps.check_version.outputs.tag }}.apk"
+          done
+
+
+      - name: Publish GitHub Release
+        if: steps.check_version.outputs.changed == 'true'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.check_version.outputs.tag }}
+          name: 我爱上班 ${{ steps.check_version.outputs.tag }}
+          body_path: changelog.txt
+          files: |
+            androidApp/build/outputs/apk/release/我爱上班-Android-*.apk
+            macos_builds/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
