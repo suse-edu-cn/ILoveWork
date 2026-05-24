@@ -62,10 +62,23 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                                 WorkMode.SINGLE_OFF -> "单休"
                                 WorkMode.BIG_SMALL_WEEK -> "大小周"
                                 WorkMode.CUSTOM -> "自定义"
+                                WorkMode.NO_REST -> "不休"
                             })
                         }
                     )
                 }
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Checkbox(
+                    checked = state.isRestDayPaid,
+                    onCheckedChange = { viewModel.dispatch(SettingsIntent.UpdateIsRestDayPaid(it)) }
+                )
+                Text("休息日是否带薪 (开启后，周末等休息日也会按秒赚钱)", style = MaterialTheme.typography.bodyMedium)
             }
         }
 

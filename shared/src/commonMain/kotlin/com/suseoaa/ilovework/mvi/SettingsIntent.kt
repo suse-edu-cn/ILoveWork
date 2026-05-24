@@ -9,5 +9,8 @@ sealed class SettingsIntent {
     data class UpdateWorkEnd(val hour: Int, val minute: Int) : SettingsIntent()
     data class UpdateLunchStart(val hour: Int, val minute: Int) : SettingsIntent()
     data class UpdateLunchEnd(val hour: Int, val minute: Int) : SettingsIntent()
+    data class UpdateCustomWorkDays(val days: Set<Int>) : SettingsIntent()
+    data class UpdateStatutoryHolidays(val holidays: Set<String>, val makeupDays: Set<String>) : SettingsIntent()
+    data class UpdateIsRestDayPaid(val isPaid: Boolean) : SettingsIntent()
     object SaveConfig : SettingsIntent()
 }

@@ -201,6 +201,11 @@
 					52CC4E22B338766334C13F0B = {
 						DevelopmentTeam = PXL9279SFY;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.macOS = {
+								enabled = 1;
+							};
+						};
 					};
 					78B35F20D51FF0CD73CA6259 = {
 						DevelopmentTeam = PXL9279SFY;
@@ -287,6 +292,7 @@
 				INFOPLIST_FILE = SalaryWidget/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos.SalaryWidget;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -365,10 +371,13 @@
 				DEVELOPMENT_TEAM = PXL9279SFY;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -385,6 +394,7 @@
 				INFOPLIST_FILE = SalaryWidget/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos.SalaryWidget;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
@@ -455,10 +465,13 @@
 				DEVELOPMENT_TEAM = PXL9279SFY;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
+				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};

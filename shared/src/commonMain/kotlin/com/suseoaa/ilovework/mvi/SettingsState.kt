@@ -14,6 +14,10 @@ data class SettingsState(
     val lunchStartMinute: Int = 0,
     val lunchEndHour: Int = 13,
     val lunchEndMinute: Int = 30,
+    val customWorkDays: Set<Int> = setOf(1, 2, 3, 4, 5),
+    val statutoryHolidays: Set<String> = emptySet(),
+    val statutoryMakeupDays: Set<String> = emptySet(),
+    val isRestDayPaid: Boolean = false,
     val isSaved: Boolean = false
 ) {
     fun toWorkConfig(): WorkConfig = WorkConfig(
@@ -26,7 +30,11 @@ data class SettingsState(
         lunchStartHour = lunchStartHour,
         lunchStartMinute = lunchStartMinute,
         lunchEndHour = lunchEndHour,
-        lunchEndMinute = lunchEndMinute
+        lunchEndMinute = lunchEndMinute,
+        customWorkDays = customWorkDays,
+        statutoryHolidays = statutoryHolidays,
+        statutoryMakeupDays = statutoryMakeupDays,
+        isRestDayPaid = isRestDayPaid
     )
 
     companion object {
@@ -40,7 +48,11 @@ data class SettingsState(
             lunchStartHour = config.lunchStartHour,
             lunchStartMinute = config.lunchStartMinute,
             lunchEndHour = config.lunchEndHour,
-            lunchEndMinute = config.lunchEndMinute
+            lunchEndMinute = config.lunchEndMinute,
+            customWorkDays = config.customWorkDays,
+            statutoryHolidays = config.statutoryHolidays,
+            statutoryMakeupDays = config.statutoryMakeupDays,
+            isRestDayPaid = config.isRestDayPaid
         )
     }
 }

@@ -4,20 +4,24 @@ import kotlinx.datetime.*
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+enum class DayType {
+    WORKDAY, REST_PAID, REST_UNPAID
+}
+
 object SalaryCalculator {
 
     fun calculate(
         currentDateTime: LocalDateTime, 
         config: WorkConfig,
-        isWorkDayOverride: Boolean? = null // null means calculate dynamically
+        dayTypeOverride: DayType? = null // null means calculate dynamically
     ): SalaryState {
         val date = currentDateTime.date
         val time = currentDateTime.time
         
-        // 1. Determine if today is a workday
-        val isWorkday = isWorkDayOverride ?: isWorkday(date, config.workMode)
-        if (!isWorkday) {
-            return SalaryState(0.0, 0.0, false)
+        // 1. Determine day type
+        val dayType = dayTypeOverride ?: getDayType(date, config)
+        if (dayType == DayType.REST_UNPAID) {
+            return SalaryState(0.0, 0.0, false, dayType, 0.0, 0L)
         }
         
         // 2. Parse times
@@ -39,16 +43,42 @@ object SalaryCalculator {
         val salaryPerSecond = if (totalWorkSeconds > 0) dailySalary / totalWorkSeconds else 0.0
         val earnedSalary = elapsedSeconds * salaryPerSecond
         
+        // If it's a paid rest day, they aren't working but they still earn money over time.
+        val isWorking = if (dayType == DayType.REST_PAID) false else isWorkingTime(time, start, end, lunchStart, lunchEnd)
+        
+        val hourlyWage = if (totalWorkSeconds > 0) dailySalary / (totalWorkSeconds / 3600.0) else 0.0
+        val secondsUntilOffWork = if (time < end) (end.toSecondOfDay() - time.toSecondOfDay()).toLong() else 0L
+        
         return SalaryState(
             dailySalary = dailySalary,
             earnedSalary = earnedSalary,
-            isWorking = isWorkingTime(time, start, end, lunchStart, lunchEnd)
+            isWorking = isWorking,
+            dayType = dayType,
+            hourlyWage = hourlyWage,
+            secondsUntilOffWork = secondsUntilOffWork
         )
     }
     
-    private fun isWorkday(date: LocalDate, mode: WorkMode): Boolean {
+    private fun getDayType(date: LocalDate, config: WorkConfig): DayType {
+        // "No Rest" mode explicitly works every day, ignoring all holidays
+        if (config.workMode == WorkMode.NO_REST) {
+            return DayType.WORKDAY
+        }
+        
+        val dateString = date.toString()
+        
+        // 1. Highest priority: Statutory Makeup Days
+        if (config.statutoryMakeupDays.contains(dateString)) {
+            return DayType.WORKDAY
+        }
+        
+        // 2. Second highest priority: Statutory Holidays (Paid)
+        if (config.statutoryHolidays.contains(dateString)) {
+            return DayType.REST_PAID
+        }
+        
         val dow = date.dayOfWeek
-        return when (mode) {
+        val isWorkday = when (config.workMode) {
             WorkMode.DOUBLE_OFF -> dow != DayOfWeek.SATURDAY && dow != DayOfWeek.SUNDAY
             WorkMode.SINGLE_OFF -> dow != DayOfWeek.SUNDAY
             WorkMode.BIG_SMALL_WEEK -> {
@@ -59,7 +89,11 @@ object SalaryCalculator {
                     dow != DayOfWeek.SUNDAY
                 }
             }
-            WorkMode.CUSTOM -> true
+            WorkMode.CUSTOM -> config.customWorkDays.contains(dow.isoDayNumber)
+            WorkMode.NO_REST -> true
+        }
+        return if (isWorkday) DayType.WORKDAY else {
+            if (config.isRestDayPaid) DayType.REST_PAID else DayType.REST_UNPAID
         }
     }
     
@@ -101,5 +135,8 @@ object SalaryCalculator {
 data class SalaryState(
     val dailySalary: Double,
     val earnedSalary: Double,
-    val isWorking: Boolean
+    val isWorking: Boolean,
+    val dayType: DayType,
+    val hourlyWage: Double = 0.0,
+    val secondsUntilOffWork: Long = 0L
 )

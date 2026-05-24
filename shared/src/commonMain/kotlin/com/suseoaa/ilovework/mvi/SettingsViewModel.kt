@@ -35,6 +35,15 @@ class SettingsViewModel(private val repository: ConfigRepository) {
             is SettingsIntent.UpdateLunchEnd ->
                 _state.update { it.copy(lunchEndHour = intent.hour, lunchEndMinute = intent.minute, isSaved = false) }
 
+            is SettingsIntent.UpdateCustomWorkDays ->
+                _state.update { it.copy(customWorkDays = intent.days, isSaved = false) }
+
+            is SettingsIntent.UpdateStatutoryHolidays ->
+                _state.update { it.copy(statutoryHolidays = intent.holidays, statutoryMakeupDays = intent.makeupDays, isSaved = false) }
+
+            is SettingsIntent.UpdateIsRestDayPaid ->
+                _state.update { it.copy(isRestDayPaid = intent.isPaid, isSaved = false) }
+
             is SettingsIntent.SaveConfig -> {
                 val config = _state.value.toWorkConfig()
                 repository.saveWorkConfig(config)

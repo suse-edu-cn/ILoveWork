@@ -21,11 +21,19 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
+import androidx.glance.state.GlanceStateDefinition
+import androidx.glance.state.PreferencesGlanceStateDefinition
+import androidx.glance.currentState
+import androidx.datastore.preferences.core.Preferences
+
 class SalaryWidget : GlanceAppWidget() {
+    override val stateDefinition: GlanceStateDefinition<*> = PreferencesGlanceStateDefinition
+
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val repository = ConfigRepository(createSettings())
         
         provideContent {
+            val prefs = currentState<Preferences>()
             val config = repository.getWorkConfig()
             val now = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
             val state = SalaryCalculator.calculate(now, config)
@@ -45,8 +53,13 @@ class SalaryWidget : GlanceAppWidget() {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    val statusText = when (state.dayType) {
+                        com.suseoaa.ilovework.domain.DayType.WORKDAY -> if (state.isWorking) "摸鱼中" else "下班啦"
+                        com.suseoaa.ilovework.domain.DayType.REST_PAID -> "休息中 (带薪)"
+                        com.suseoaa.ilovework.domain.DayType.REST_UNPAID -> "休息中 (无薪)"
+                    }
                     Text(
-                        text = if (state.isWorking) "工作中..." else "休息中",
+                        text = statusText,
                         style = TextStyle(color = textColor, fontWeight = FontWeight.Bold)
                     )
                     Spacer(modifier = GlanceModifier.height(8.dp))
@@ -55,9 +68,29 @@ class SalaryWidget : GlanceAppWidget() {
                         style = TextStyle(color = textColor)
                     )
                     Text(
-                        text = "¥ %.2f".format(state.earnedSalary),
+                        text = "¥ %.4f".format(state.earnedSalary),
                         style = TextStyle(color = textColor, fontWeight = FontWeight.Bold)
                     )
+                    
+                    Spacer(modifier = GlanceModifier.height(4.dp))
+                    Text(
+                        text = "时薪: ¥ %.2f".format(state.hourlyWage),
+                        style = TextStyle(color = ColorProvider(Color.Gray))
+                    )
+                    
+                    if (state.secondsUntilOffWork > 0) {
+                        val h = state.secondsUntilOffWork / 3600
+                        val m = (state.secondsUntilOffWork % 3600) / 60
+                        Text(
+                            text = "距离下班: %d小时%d分".format(h, m),
+                            style = TextStyle(color = ColorProvider(Color.Gray))
+                        )
+                    } else if (state.dayType == com.suseoaa.ilovework.domain.DayType.WORKDAY) {
+                        Text(
+                            text = "打卡下班啦！",
+                            style = TextStyle(color = ColorProvider(Color.Gray))
+                        )
+                    }
                 }
             }
         }

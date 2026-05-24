@@ -8,13 +8,15 @@ enum WorkMode: String, CaseIterable {
     case singleOff = "SINGLE_OFF"
     case bigSmallWeek = "BIG_SMALL_WEEK"
     case custom = "CUSTOM"
+    case noRest = "NO_REST"
 
     var displayName: String {
         switch self {
         case .doubleOff:      return "双休"
         case .singleOff:      return "单休"
         case .bigSmallWeek:   return "大小周"
-        case .custom:         return "调休/自定义"
+        case .custom:         return "自定义"
+        case .noRest:         return "不休"
         }
     }
 }
@@ -30,30 +32,42 @@ struct WorkConfig {
     var lunchStartMinute: Int  = 0
     var lunchEndHour: Int      = 13
     var lunchEndMinute: Int    = 30
+    
+    var customWorkDays: Set<Int> = [1, 2, 3, 4, 5] // 1=Mon, 7=Sun
+    var statutoryHolidays: Set<String> = [] // YYYY-MM-DD
+    var statutoryMakeupDays: Set<String> = [] // YYYY-MM-DD
+    var isRestDayPaid: Bool = false
 }
+
+// MARK: - Formatter Helper
+
+private let dateFormatter: DateFormatter = {
+    let df = DateFormatter()
+    df.dateFormat = "yyyy-MM-dd"
+    return df
+}()
 
 // MARK: - File-based persistence via App Group (shared between App + Widget)
 
 enum ConfigStore {
     static let appGroup = "group.com.suseoaa.ilovework"
-    static let fileName = "ilovework_config.properties"
-
-    static var fileURL: URL? {
-        FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: appGroup)?
-            .appendingPathComponent(fileName)
-    }
 
     static func load() -> WorkConfig {
         var cfg = WorkConfig()
-        guard let url = fileURL,
-              let content = try? String(contentsOf: url, encoding: .utf8) else { return cfg }
+        guard let sharedDefaults = UserDefaults(suiteName: appGroup),
+              let content = sharedDefaults.string(forKey: "ilovework_config_data") else {
+            return cfg
+        }
 
         var d = [String: String]()
         for line in content.components(separatedBy: .newlines) {
             guard !line.hasPrefix("#"), !line.isEmpty else { continue }
             let parts = line.split(separator: "=", maxSplits: 1).map(String.init)
-            if parts.count == 2 { d[parts[0].trimmingCharacters(in: .whitespaces)] = parts[1] }
+            if parts.count == 2 {
+                let key = parts[0].trimmingCharacters(in: .whitespaces)
+                let value = parts[1].trimmingCharacters(in: .whitespacesAndNewlines)
+                d[key] = value
+            }
         }
 
         if let v = d["monthlySalary"].flatMap(Double.init)  { cfg.monthlySalary   = v }
@@ -66,12 +80,29 @@ enum ConfigStore {
         if let v = d["lunchStartMinute"].flatMap(Int.init)  { cfg.lunchStartMinute = v }
         if let v = d["lunchEndHour"].flatMap(Int.init)      { cfg.lunchEndHour     = v }
         if let v = d["lunchEndMinute"].flatMap(Int.init)    { cfg.lunchEndMinute   = v }
+        
+        if let v = d["customWorkDays"] {
+            let days = v.split(separator: ",").compactMap { Int($0) }
+            if !days.isEmpty { cfg.customWorkDays = Set(days) }
+            else if v == "" { cfg.customWorkDays = [] }
+        }
+        
+        if let v = d["statutoryHolidays"] {
+            let dates = v.split(separator: ",").map(String.init)
+            cfg.statutoryHolidays = Set(dates)
+        }
+        
+        if let v = d["statutoryMakeupDays"] {
+            let dates = v.split(separator: ",").map(String.init)
+            cfg.statutoryMakeupDays = Set(dates)
+        }
+        
+        if let v = d["isRestDayPaid"].flatMap(Bool.init) { cfg.isRestDayPaid = v }
 
         return cfg
     }
 
     static func save(_ cfg: WorkConfig) {
-        guard let url = fileURL else { return }
         var lines = [String]()
         lines.append("monthlySalary=\(cfg.monthlySalary)")
         lines.append("workMode=\(cfg.workMode.rawValue)")
@@ -83,7 +114,26 @@ enum ConfigStore {
         lines.append("lunchStartMinute=\(cfg.lunchStartMinute)")
         lines.append("lunchEndHour=\(cfg.lunchEndHour)")
         lines.append("lunchEndMinute=\(cfg.lunchEndMinute)")
-        try? lines.joined(separator: "\n").write(to: url, atomically: true, encoding: .utf8)
+        
+        let customDaysStr = cfg.customWorkDays.map(String.init).joined(separator: ",")
+        lines.append("customWorkDays=\(customDaysStr)")
+        
+        let holidaysStr = cfg.statutoryHolidays.joined(separator: ",")
+        lines.append("statutoryHolidays=\(holidaysStr)")
+        
+        let makeupDaysStr = cfg.statutoryMakeupDays.joined(separator: ",")
+        lines.append("statutoryMakeupDays=\(makeupDaysStr)")
+        lines.append("isRestDayPaid=\(cfg.isRestDayPaid)")
+        if let sharedDefaults = UserDefaults(suiteName: appGroup) {
+            sharedDefaults.set(lines.joined(separator: "\n"), forKey: "ilovework_config_data")
+            sharedDefaults.synchronize() // 强制同步至磁盘，防止小组件读取延迟
+        }
+    }
+
+    enum DayType {
+        case workday
+        case restPaid
+        case restUnpaid
     }
 
     // MARK: - Pre-compute salary formula (called once on save)
@@ -93,11 +143,17 @@ enum ConfigStore {
         let workEnd: Date
         let lunchStart: Date
         let lunchEnd: Date
-        let isWorkday: Bool
+        let dayType: DayType
 
-        /// Pure arithmetic — no I/O, safe to call every frame
-        func earned(at date: Date) -> (salary: Double, isWorking: Bool) {
-            guard isWorkday, date >= workStart else { return (0, false) }
+        func earned(at date: Date) -> (salary: Double, isWorking: Bool, dayType: DayType, hourlyWage: Double, secondsUntilOffWork: TimeInterval) {
+            let hourlyWage = salaryPerSecond * 3600.0
+            let secondsUntilOffWork = max(0, workEnd.timeIntervalSince(date))
+            
+            if dayType == .restUnpaid {
+                return (0, false, dayType, hourlyWage, secondsUntilOffWork)
+            }
+            guard date >= workStart else { return (0, false, dayType, hourlyWage, secondsUntilOffWork) }
+            
             let cur = min(date, workEnd)
             let totalElapsed = cur.timeIntervalSince(workStart)
             var lunchElapsed: TimeInterval = 0
@@ -105,9 +161,16 @@ enum ConfigStore {
                 lunchElapsed = min(cur, lunchEnd).timeIntervalSince(lunchStart)
             }
             let validElapsed = max(0, totalElapsed - lunchElapsed)
-            let isWorking = date >= workStart && date <= workEnd
-                         && !(date >= lunchStart && date <= lunchEnd)
-            return (validElapsed * salaryPerSecond, isWorking)
+            
+            let isWorking: Bool
+            if dayType == .restPaid {
+                isWorking = false // Rest day, not working
+            } else {
+                isWorking = date >= workStart && date <= workEnd
+                             && !(date >= lunchStart && date <= lunchEnd)
+            }
+            
+            return (validElapsed * salaryPerSecond, isWorking, dayType, hourlyWage, secondsUntilOffWork)
         }
     }
 
@@ -125,23 +188,50 @@ enum ConfigStore {
         let dailySalary = cfg.monthlySalary / 21.75
         let sps = totalWork > 0 ? dailySalary / totalWork : 0.0
 
-        let isWorkday = isWorkday(date: date, mode: cfg.workMode)
+        let dayType = getDayType(date: date, cfg: cfg)
         return SalaryFormula(salaryPerSecond: sps,
                              workStart: ws, workEnd: we,
                              lunchStart: ls, lunchEnd: le,
-                             isWorkday: isWorkday)
+                             dayType: dayType)
     }
 
-    private static func isWorkday(date: Date, mode: WorkMode) -> Bool {
-        let dow = Calendar.current.component(.weekday, from: date) // 1=Sun, 7=Sat
-        switch mode {
-        case .doubleOff:    return dow != 1 && dow != 7
-        case .singleOff:    return dow != 1
+    private static func getDayType(date: Date, cfg: WorkConfig) -> DayType {
+        // "No Rest" mode explicitly works every day, ignoring all holidays
+        if cfg.workMode == .noRest {
+            return .workday
+        }
+        
+        let dateString = dateFormatter.string(from: date)
+        
+        // 1. Highest priority: Statutory Makeup Days
+        if cfg.statutoryMakeupDays.contains(dateString) {
+            return .workday
+        }
+        
+        // 2. Second highest priority: Statutory Holidays (Paid Rest)
+        if cfg.statutoryHolidays.contains(dateString) {
+            return .restPaid
+        }
+        
+        // 3. Fallback to normal WorkMode logic
+        let foundationWeekday = Calendar.current.component(.weekday, from: date)
+        let isoWeekday = foundationWeekday == 1 ? 7 : foundationWeekday - 1
+        
+        let isWorkday: Bool
+        switch cfg.workMode {
+        case .doubleOff:
+            isWorkday = isoWeekday != 6 && isoWeekday != 7
+        case .singleOff:
+            isWorkday = isoWeekday != 7
         case .bigSmallWeek:
             // Even ISO-week → double rest; odd ISO-week → single rest
             let isoWeek = Calendar.current.component(.weekOfYear, from: date)
-            return isoWeek % 2 == 0 ? (dow != 1 && dow != 7) : (dow != 1)
-        case .custom:       return true
+            isWorkday = isoWeek % 2 == 0 ? (isoWeekday != 6 && isoWeekday != 7) : (isoWeekday != 7)
+        case .custom:
+            isWorkday = cfg.customWorkDays.contains(isoWeekday)
+        case .noRest:
+            isWorkday = true
         }
+        return isWorkday ? .workday : (cfg.isRestDayPaid ? .restPaid : .restUnpaid)
     }
 }

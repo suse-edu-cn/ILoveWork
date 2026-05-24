@@ -59,13 +59,13 @@ struct SalaryWidgetView: View {
         // TimelineView(.animation) re-renders every display frame.
         // The closure does ONLY arithmetic — zero I/O, zero allocations.
         TimelineView(.animation) { ctx in
-            let (earned, isWorking) = entry.formula.earned(at: ctx.date)
+            let (earned, isWorking, dayType, hourlyWage, secondsUntilOff) = entry.formula.earned(at: ctx.date)
 
             switch family {
             case .systemSmall:
-                smallView(earned: earned, isWorking: isWorking)
+                smallView(earned: earned, isWorking: isWorking, dayType: dayType, hourlyWage: hourlyWage, secondsUntilOff: secondsUntilOff)
             default:
-                mediumView(earned: earned, isWorking: isWorking)
+                mediumView(earned: earned, isWorking: isWorking, dayType: dayType, hourlyWage: hourlyWage, secondsUntilOff: secondsUntilOff)
             }
         }
         .containerBackground(for: .widget) { bgColor }
@@ -74,13 +74,14 @@ struct SalaryWidgetView: View {
     // MARK: Small
 
     @ViewBuilder
-    func smallView(earned: Double, isWorking: Bool) -> some View {
+    func smallView(earned: Double, isWorking: Bool, dayType: ConfigStore.DayType, hourlyWage: Double, secondsUntilOff: TimeInterval) -> some View {
         VStack(spacing: 6) {
             HStack(spacing: 4) {
                 Circle()
                     .fill(isWorking ? .green : .orange)
                     .frame(width: 7, height: 7)
-                Text(isWorking ? "工作中" : "休息中")
+                let statusText = statusText(isWorking: isWorking, dayType: dayType)
+                Text(statusText)
                     .font(.caption2)
                     .foregroundStyle(textSecondary)
             }
@@ -92,10 +93,28 @@ struct SalaryWidgetView: View {
             Text("¥")
                 .font(.callout.bold())
                 .foregroundStyle(textPrimary)
-            + Text(String(format: "%.2f", earned))
+            + Text(String(format: "%.4f", earned))
                 .font(.system(.title2, design: .rounded).bold())
                 .foregroundStyle(textPrimary)
                 .monospacedDigit()
+                
+            Text(String(format: "时薪: ¥%.2f", hourlyWage))
+                .font(.caption2)
+                .foregroundStyle(textSecondary)
+                
+            if secondsUntilOff > 0 {
+                let h = Int(secondsUntilOff) / 3600
+                let m = (Int(secondsUntilOff) % 3600) / 60
+                let s = Int(secondsUntilOff) % 60
+                Text(String(format: "下班: %02d:%02d:%02d", h, m, s))
+                    .font(.system(size: 10))
+                    .foregroundStyle(textSecondary)
+                    .monospacedDigit()
+            } else if dayType == .workday {
+                Text("打卡下班啦！")
+                    .font(.system(size: 10))
+                    .foregroundStyle(textSecondary)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
@@ -103,14 +122,15 @@ struct SalaryWidgetView: View {
     // MARK: Medium
 
     @ViewBuilder
-    func mediumView(earned: Double, isWorking: Bool) -> some View {
+    func mediumView(earned: Double, isWorking: Bool, dayType: ConfigStore.DayType, hourlyWage: Double, secondsUntilOff: TimeInterval) -> some View {
         HStack {
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 6) {
                 HStack(spacing: 6) {
                     Circle()
                         .fill(isWorking ? .green : .orange)
                         .frame(width: 9, height: 9)
-                    Text(isWorking ? "工作中" : "休息中")
+                    let statusText = statusText(isWorking: isWorking, dayType: dayType)
+                    Text(statusText)
                         .font(.subheadline.bold())
                         .foregroundStyle(textPrimary)
                 }
@@ -124,6 +144,26 @@ struct SalaryWidgetView: View {
                     .font(.system(.title, design: .rounded).bold())
                     .monospacedDigit())
                 .foregroundStyle(textPrimary)
+                
+                HStack {
+                    Text(String(format: "时薪: ¥%.2f", hourlyWage))
+                        .font(.caption2)
+                        .foregroundStyle(textSecondary)
+                }
+                
+                if secondsUntilOff > 0 {
+                    let h = Int(secondsUntilOff) / 3600
+                    let m = (Int(secondsUntilOff) % 3600) / 60
+                    let s = Int(secondsUntilOff) % 60
+                    Text(String(format: "距离下班还有 %02d:%02d:%02d", h, m, s))
+                        .font(.caption2)
+                        .foregroundStyle(textSecondary)
+                        .monospacedDigit()
+                } else if dayType == .workday {
+                    Text("打卡下班啦！")
+                        .font(.caption2)
+                        .foregroundStyle(textSecondary)
+                }
             }
 
             Spacer()
@@ -143,6 +183,17 @@ struct SalaryWidgetView: View {
         }
         .padding(.horizontal, 4)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func statusText(isWorking: Bool, dayType: ConfigStore.DayType) -> String {
+        switch dayType {
+        case .workday:
+            return isWorking ? "工作中" : "休息中"
+        case .restPaid:
+            return "休息中 (带薪)"
+        case .restUnpaid:
+            return "休息中 (无薪)"
+        }
     }
 
     private func progressRatio(earned: Double) -> Double {
