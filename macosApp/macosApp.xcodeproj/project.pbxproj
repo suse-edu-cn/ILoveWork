@@ -384,6 +384,7 @@
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "我爱上班";
+				INFOPLIST_KEY_CFBundleName = "我爱上班";
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -391,6 +392,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
+				PRODUCT_NAME = "我爱上班";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
@@ -482,6 +484,7 @@
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "我爱上班";
+				INFOPLIST_KEY_CFBundleName = "我爱上班";
 				INFOPLIST_KEY_NSCalendarsFullAccessUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "我们需要访问日历以自动同步中国的法定节假日与调休安排，为您精准计算工资。";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
@@ -489,6 +492,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
+				PRODUCT_NAME = "我爱上班";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;

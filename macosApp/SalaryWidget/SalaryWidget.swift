@@ -202,8 +202,11 @@ struct SalaryWidgetView: View {
     }
 
     private var progressRatio: Double {
-        let dailySalary = entry.formula.salaryPerSecond
-                        * entry.formula.workEnd.timeIntervalSince(entry.formula.workStart)
+        let totalElapsed = entry.formula.workEnd.timeIntervalSince(entry.formula.workStart)
+        let lunchElapsed = entry.formula.lunchEnd.timeIntervalSince(entry.formula.lunchStart)
+        let validTotalSeconds = max(0, totalElapsed - max(0, lunchElapsed))
+        
+        let dailySalary = entry.formula.salaryPerSecond * validTotalSeconds
         guard dailySalary > 0 else { return 0 }
         return min(entry.earnedAmount / dailySalary, 1.0)
     }
