@@ -1,0 +1,500 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D682F5362496CBE5587D603 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 876F82A2338AB3F204A09F60 /* SwiftUI.framework */; };
+		28AA1668EC74505192C460B6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC85680DE14681B99680295 /* WidgetKit.framework */; };
+		2B54683B7551ACB1BE9DE22B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21F747B928898AA5190A174F /* ContentView.swift */; };
+		6E7B65F20BB1415741E3C78F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62E0B4A140B9A7BFC4293145 /* Cocoa.framework */; };
+		826A7EFE34BEE23385F9F664 /* SalaryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E4255E40C8077EF8C5C509 /* SalaryWidget.swift */; };
+		90B5BC7666FBCFE3490D29F6 /* macosAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74636E0A6C7B2ECA5BDFFA /* macosAppApp.swift */; };
+		92856EEBFBBBD97950069E6D /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491328310628456A3E60BA06 /* Config.swift */; };
+		B6094D3B2E1C93837B5DDF73 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62E0B4A140B9A7BFC4293145 /* Cocoa.framework */; };
+		E2F5A301C0920EAFEAD3DF9B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 876F82A2338AB3F204A09F60 /* SwiftUI.framework */; };
+		E8D5458BDE19394C575C8A78 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491328310628456A3E60BA06 /* Config.swift */; };
+		EFF6B4A9CD29C8AEF030B30D /* SalaryWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		F433252A7077FC84B8755FCF /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC85680DE14681B99680295 /* WidgetKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6B500063DD5E40731A6AD917 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 228514F5AD56675EC42691BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52CC4E22B338766334C13F0B;
+			remoteInfo = SalaryWidget;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		35E9391B9FE6D83D9DB12D7B /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EFF6B4A9CD29C8AEF030B30D /* SalaryWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0BA2AAC6242E6A7006C2F964 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21F747B928898AA5190A174F /* ContentView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		42E4255E40C8077EF8C5C509 /* SalaryWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SalaryWidget.swift; sourceTree = "<group>"; };
+		491328310628456A3E60BA06 /* Config.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		4E892004316B8500E2EBC98E /* macosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4FB42B11D1238DC20602FAF4 /* macosApp.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = macosApp.entitlements; sourceTree = "<group>"; };
+		62E0B4A140B9A7BFC4293145 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		876F82A2338AB3F204A09F60 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		BD74636E0A6C7B2ECA5BDFFA /* macosAppApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = macosAppApp.swift; sourceTree = "<group>"; };
+		BFC85680DE14681B99680295 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		C1DF19E2ABFE7D80A41441FB /* SalaryWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = SalaryWidget.entitlements; sourceTree = "<group>"; };
+		EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SalaryWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3805601C7EA2F183A886D3B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6094D3B2E1C93837B5DDF73 /* Cocoa.framework in Frameworks */,
+				E2F5A301C0920EAFEAD3DF9B /* SwiftUI.framework in Frameworks */,
+				28AA1668EC74505192C460B6 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E3E06DD09AC1E9468C64BB82 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E7B65F20BB1415741E3C78F /* Cocoa.framework in Frameworks */,
+				F433252A7077FC84B8755FCF /* WidgetKit.framework in Frameworks */,
+				1D682F5362496CBE5587D603 /* SwiftUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		105077BB00CC0EF171AAA269 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				491328310628456A3E60BA06 /* Config.swift */,
+			);
+			path = Shared;
+			sourceTree = SOURCE_ROOT;
+		};
+		1DE4C701095807AE4F6CA339 /* macosApp */ = {
+			isa = PBXGroup;
+			children = (
+				BD74636E0A6C7B2ECA5BDFFA /* macosAppApp.swift */,
+				21F747B928898AA5190A174F /* ContentView.swift */,
+				4FB42B11D1238DC20602FAF4 /* macosApp.entitlements */,
+			);
+			path = macosApp;
+			sourceTree = "<group>";
+		};
+		447E19E867D591A2294F3E33 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				862947C058E764DFEB2A60C0 /* OS X */,
+				BFC85680DE14681B99680295 /* WidgetKit.framework */,
+				876F82A2338AB3F204A09F60 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		862947C058E764DFEB2A60C0 /* OS X */ = {
+			isa = PBXGroup;
+			children = (
+				62E0B4A140B9A7BFC4293145 /* Cocoa.framework */,
+			);
+			name = "OS X";
+			sourceTree = "<group>";
+		};
+		E0AFB7CFFC438A8FE0E97290 /* SalaryWidget */ = {
+			isa = PBXGroup;
+			children = (
+				42E4255E40C8077EF8C5C509 /* SalaryWidget.swift */,
+				0BA2AAC6242E6A7006C2F964 /* Info.plist */,
+				C1DF19E2ABFE7D80A41441FB /* SalaryWidget.entitlements */,
+			);
+			path = SalaryWidget;
+			sourceTree = "<group>";
+		};
+		E9D7CA690C6E63C55479C6D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4E892004316B8500E2EBC98E /* macosApp.app */,
+				EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EF11BF9EA97B2149962A59E7 = {
+			isa = PBXGroup;
+			children = (
+				E9D7CA690C6E63C55479C6D3 /* Products */,
+				447E19E867D591A2294F3E33 /* Frameworks */,
+				1DE4C701095807AE4F6CA339 /* macosApp */,
+				E0AFB7CFFC438A8FE0E97290 /* SalaryWidget */,
+				105077BB00CC0EF171AAA269 /* Shared */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		52CC4E22B338766334C13F0B /* SalaryWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 36FF570B8849EA281B138138 /* Build configuration list for PBXNativeTarget "SalaryWidget" */;
+			buildPhases = (
+				6C1E05F59D9DDBB49BDED9CC /* Sources */,
+				E3E06DD09AC1E9468C64BB82 /* Frameworks */,
+				B41B5A1DBCC467EACFC7A8D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SalaryWidget;
+			productName = SalaryWidget;
+			productReference = EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		78B35F20D51FF0CD73CA6259 /* macosApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 865D690B253A689392B7CBF7 /* Build configuration list for PBXNativeTarget "macosApp" */;
+			buildPhases = (
+				9611344DC33CE909E5F4232C /* Sources */,
+				3805601C7EA2F183A886D3B9 /* Frameworks */,
+				073B1CBC34C1F580E67A23AC /* Resources */,
+				35E9391B9FE6D83D9DB12D7B /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				84AD423A1A94A22E42F47500 /* PBXTargetDependency */,
+			);
+			name = macosApp;
+			productName = ILoveWork;
+			productReference = 4E892004316B8500E2EBC98E /* macosApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		228514F5AD56675EC42691BE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					52CC4E22B338766334C13F0B = {
+						DevelopmentTeam = PXL9279SFY;
+						ProvisioningStyle = Automatic;
+					};
+					78B35F20D51FF0CD73CA6259 = {
+						DevelopmentTeam = PXL9279SFY;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = FCF6876F8CAA99D2FF18D54A /* Build configuration list for PBXProject "macosApp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EF11BF9EA97B2149962A59E7;
+			productRefGroup = E9D7CA690C6E63C55479C6D3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				78B35F20D51FF0CD73CA6259 /* macosApp */,
+				52CC4E22B338766334C13F0B /* SalaryWidget */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		073B1CBC34C1F580E67A23AC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B41B5A1DBCC467EACFC7A8D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6C1E05F59D9DDBB49BDED9CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				826A7EFE34BEE23385F9F664 /* SalaryWidget.swift in Sources */,
+				92856EEBFBBBD97950069E6D /* Config.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9611344DC33CE909E5F4232C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90B5BC7666FBCFE3490D29F6 /* macosAppApp.swift in Sources */,
+				2B54683B7551ACB1BE9DE22B /* ContentView.swift in Sources */,
+				E8D5458BDE19394C575C8A78 /* Config.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		84AD423A1A94A22E42F47500 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SalaryWidget;
+			target = 52CC4E22B338766334C13F0B /* SalaryWidget */;
+			targetProxy = 6B500063DD5E40731A6AD917 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		01897F7A0D8C2A3CAC349513 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SalaryWidget/SalaryWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PXL9279SFY;
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SalaryWidget/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos.SalaryWidget;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		04A5EC21348CE542E63F410E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		0930CCAABB626C514C6F27C2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macosApp/macosApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = PXL9279SFY;
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		8F5A7A5CE53F791FB9D142A0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SalaryWidget/SalaryWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PXL9279SFY;
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SalaryWidget/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos.SalaryWidget;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		8FD1C833E0ACE395726FA5D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		EDE7EE1FE4C30F640E841525 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macosApp/macosApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = PXL9279SFY;
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		36FF570B8849EA281B138138 /* Build configuration list for PBXNativeTarget "SalaryWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8F5A7A5CE53F791FB9D142A0 /* Release */,
+				01897F7A0D8C2A3CAC349513 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		865D690B253A689392B7CBF7 /* Build configuration list for PBXNativeTarget "macosApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0930CCAABB626C514C6F27C2 /* Release */,
+				EDE7EE1FE4C30F640E841525 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FCF6876F8CAA99D2FF18D54A /* Build configuration list for PBXProject "macosApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04A5EC21348CE542E63F410E /* Debug */,
+				8FD1C833E0ACE395726FA5D6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 228514F5AD56675EC42691BE /* Project object */;
+}
