@@ -69,10 +69,19 @@ struct SlackingSettingsView: View {
                             Text("系统设置 → 隐私与安全性 → 完全磁盘访问权限 → 添加「我爱上班」")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
-                            Button("打开系统设置") {
-                                openFullDiskAccessSettings()
+                            Text("授权后需要重启应用才能生效")
+                                .font(.caption)
+                                .foregroundStyle(.orange)
+                            HStack(spacing: 8) {
+                                Button("打开系统设置") {
+                                    openFullDiskAccessSettings()
+                                }
+                                .controlSize(.small)
+                                Button("重新检测") {
+                                    checkFullDiskAccess()
+                                }
+                                .controlSize(.small)
                             }
-                            .controlSize(.small)
                         }
                     }
                 } header: {
