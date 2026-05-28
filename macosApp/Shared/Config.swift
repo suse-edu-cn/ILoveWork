@@ -41,6 +41,9 @@ struct WorkConfig {
     
     var workHoursPerDay: Double = 9.0
     var refreshFrequency: Int = 5
+
+    // Slacking mode: work app bundle IDs
+    var workAppBundleIDs: Set<String> = []
 }
 
 // MARK: - Formatter Helper
@@ -114,6 +117,11 @@ enum ConfigStore {
         if let v = d["workHoursPerDay"].flatMap(Double.init) { cfg.workHoursPerDay = v }
         if let v = d["refreshFrequency"].flatMap(Int.init) { cfg.refreshFrequency = v }
 
+        if let v = d["workAppBundleIDs"] {
+            let ids = v.split(separator: ",").map(String.init)
+            cfg.workAppBundleIDs = Set(ids)
+        }
+
         return cfg
     }
 
@@ -142,15 +150,34 @@ enum ConfigStore {
         lines.append("payday=\(cfg.payday)")
         lines.append("workHoursPerDay=\(cfg.workHoursPerDay)")
         lines.append("refreshFrequency=\(cfg.refreshFrequency)")
+        let workAppIDsStr = cfg.workAppBundleIDs.joined(separator: ",")
+        lines.append("workAppBundleIDs=\(workAppIDsStr)")
         
         let url = configURL
         let dir = url.deletingLastPathComponent()
         if !FileManager.default.fileExists(atPath: dir.path) {
             try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         }
-        
+
+        // Write via FileHandle + synchronizeFile to guarantee data is flushed to disk
         let content = lines.joined(separator: "\n")
-        try? content.write(to: url, atomically: true, encoding: .utf8)
+        FileManager.default.createFile(atPath: url.path, contents: nil)
+        if let fh = FileHandle(forWritingAtPath: url.path) {
+            fh.write(Data(content.utf8))
+            fh.synchronizeFile()
+            fh.closeFile()
+        }
+    }
+
+    /// Clear the widget extension's local caches to force a fresh read on next timeline reload.
+    static func clearWidgetCache() {
+        let widgetContainer = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/Containers/com.suseoaa.ilovework.macos.SalaryWidget/Data/Library/Caches")
+        if let items = try? FileManager.default.contentsOfDirectory(atPath: widgetContainer.path) {
+            for item in items {
+                try? FileManager.default.removeItem(at: widgetContainer.appendingPathComponent(item))
+            }
+        }
     }
 
     enum DayType {
@@ -223,6 +250,33 @@ enum ConfigStore {
                              workStart: ws, workEnd: we,
                              lunchStart: ls, lunchEnd: le,
                              dayType: dayType)
+    }
+
+    static func computeDaysUntilPayday(payday: Int, from date: Date) -> Int {
+        let cal = Calendar.current
+        let currentDay = cal.component(.day, from: date)
+
+        var targetMonth = cal.component(.month, from: date)
+        var targetYear = cal.component(.year, from: date)
+
+        if currentDay > payday {
+            targetMonth += 1
+            if targetMonth > 12 {
+                targetMonth = 1
+                targetYear += 1
+            }
+        }
+
+        var comps = DateComponents(year: targetYear, month: targetMonth, day: payday)
+        if !comps.isValidDate(in: cal) {
+            let range = cal.range(of: .day, in: .month, for: cal.date(from: DateComponents(year: targetYear, month: targetMonth))!)!
+            comps.day = range.count
+        }
+        let targetDate = cal.date(from: comps)!
+        let startOfToday = cal.startOfDay(for: date)
+        let startOfTarget = cal.startOfDay(for: targetDate)
+
+        return cal.dateComponents([.day], from: startOfToday, to: startOfTarget).day ?? 0
     }
 
     private static func getDayType(date: Date, cfg: WorkConfig) -> DayType {

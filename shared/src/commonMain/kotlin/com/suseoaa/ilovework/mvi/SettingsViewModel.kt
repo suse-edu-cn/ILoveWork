@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.update
 
 /**
  * MVI ViewModel — pure Kotlin, no Android/Compose dependency.
- * Both Android and Desktop platforms consume this via StateFlow.
+ * Android and macOS platforms consume this via StateFlow.
  */
 class SettingsViewModel(private val repository: ConfigRepository) {
 

@@ -15,9 +15,27 @@
 		826A7EFE34BEE23385F9F664 /* SalaryWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42E4255E40C8077EF8C5C509 /* SalaryWidget.swift */; };
 		90B5BC7666FBCFE3490D29F6 /* macosAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD74636E0A6C7B2ECA5BDFFA /* macosAppApp.swift */; };
 		92856EEBFBBBD97950069E6D /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491328310628456A3E60BA06 /* Config.swift */; };
+		A1B2C3D401000001E2F3A4B5 /* SidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000001E2F3A4B5 /* SidebarView.swift */; };
+		A1B2C3D401000002E2F3A4B5 /* WidgetPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000002E2F3A4B5 /* WidgetPreviewView.swift */; };
+		A1B2C3D401000003E2F3A4B5 /* BasicSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000003E2F3A4B5 /* BasicSettingsView.swift */; };
+		A1B2C3D401000004E2F3A4B5 /* WorkTimeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000004E2F3A4B5 /* WorkTimeSettingsView.swift */; };
+		A1B2C3D401000005E2F3A4B5 /* WorkModeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000005E2F3A4B5 /* WorkModeSettingsView.swift */; };
+		A1B2C3D401000006E2F3A4B5 /* UpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000006E2F3A4B5 /* UpdateView.swift */; };
+		A1B2C3D401000007E2F3A4B5 /* OtherSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D402000007E2F3A4B5 /* OtherSettingsView.swift */; };
 		B6094D3B2E1C93837B5DDF73 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62E0B4A140B9A7BFC4293145 /* Cocoa.framework */; };
 		BFD58B112FC323DE008A40F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFD58B102FC323DE008A40F4 /* Assets.xcassets */; };
 		BFD58B122FC323DE008A40F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFD58B102FC323DE008A40F4 /* Assets.xcassets */; };
+		C0DE000100000001AAAAAAAA /* SlackingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE000200000001AAAAAAAA /* SlackingStore.swift */; };
+		C0DE000100000002AAAAAAAA /* SlackingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE000200000001AAAAAAAA /* SlackingStore.swift */; };
+		C0DE000100000003AAAAAAAA /* SlackingTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE000200000003AAAAAAAA /* SlackingTracker.swift */; };
+		C0DE000100000004AAAAAAAA /* SlackingSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE000200000004AAAAAAAA /* SlackingSettingsView.swift */; };
+		C0DE000100000005AAAAAAAA /* SlackingWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE000200000005AAAAAAAA /* SlackingWidget.swift */; };
+		C0DE000100000006AAAAAAAA /* SlackingWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C0DE000200000006AAAAAAAA /* SlackingWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C0DE000100000007AAAAAAAA /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491328310628456A3E60BA06 /* Config.swift */; };
+		C0DE000100000008AAAAAAAA /* SlackingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DE000200000001AAAAAAAA /* SlackingStore.swift */; };
+		C0DE000100000009AAAAAAAA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC85680DE14681B99680295 /* WidgetKit.framework */; };
+		C0DE00010000000AAAAAAAAA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 876F82A2338AB3F204A09F60 /* SwiftUI.framework */; };
+		C0DE00010000000BAAAAAAAA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62E0B4A140B9A7BFC4293145 /* Cocoa.framework */; };
 		E2F5A301C0920EAFEAD3DF9B /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 876F82A2338AB3F204A09F60 /* SwiftUI.framework */; };
 		E8D5458BDE19394C575C8A78 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 491328310628456A3E60BA06 /* Config.swift */; };
 		EFF6B4A9CD29C8AEF030B30D /* SalaryWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -32,6 +50,13 @@
 			remoteGlobalIDString = 52CC4E22B338766334C13F0B;
 			remoteInfo = SalaryWidget;
 		};
+		C0DE000300000001AAAAAAAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 228514F5AD56675EC42691BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0DE000400000001AAAAAAAA;
+			remoteInfo = SlackingWidget;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +67,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				EFF6B4A9CD29C8AEF030B30D /* SalaryWidget.appex in Embed Foundation Extensions */,
+				C0DE000100000006AAAAAAAA /* SlackingWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,9 +84,23 @@
 		4FB42B11D1238DC20602FAF4 /* macosApp.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = macosApp.entitlements; sourceTree = "<group>"; };
 		62E0B4A140B9A7BFC4293145 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk/System/Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
 		876F82A2338AB3F204A09F60 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		A1B2C3D402000001E2F3A4B5 /* SidebarView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SidebarView.swift; sourceTree = "<group>"; };
+		A1B2C3D402000002E2F3A4B5 /* WidgetPreviewView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WidgetPreviewView.swift; sourceTree = "<group>"; };
+		A1B2C3D402000003E2F3A4B5 /* BasicSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BasicSettingsView.swift; sourceTree = "<group>"; };
+		A1B2C3D402000004E2F3A4B5 /* WorkTimeSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorkTimeSettingsView.swift; sourceTree = "<group>"; };
+		A1B2C3D402000005E2F3A4B5 /* WorkModeSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = WorkModeSettingsView.swift; sourceTree = "<group>"; };
+		A1B2C3D402000006E2F3A4B5 /* UpdateView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = UpdateView.swift; sourceTree = "<group>"; };
+		A1B2C3D402000007E2F3A4B5 /* OtherSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OtherSettingsView.swift; sourceTree = "<group>"; };
 		BD74636E0A6C7B2ECA5BDFFA /* macosAppApp.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = macosAppApp.swift; sourceTree = "<group>"; };
 		BFC85680DE14681B99680295 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		BFD58B102FC323DE008A40F4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C0DE000200000001AAAAAAAA /* SlackingStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SlackingStore.swift; sourceTree = "<group>"; };
+		C0DE000200000003AAAAAAAA /* SlackingTracker.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SlackingTracker.swift; sourceTree = "<group>"; };
+		C0DE000200000004AAAAAAAA /* SlackingSettingsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SlackingSettingsView.swift; sourceTree = "<group>"; };
+		C0DE000200000005AAAAAAAA /* SlackingWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SlackingWidget.swift; sourceTree = "<group>"; };
+		C0DE000200000006AAAAAAAA /* SlackingWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SlackingWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0DE000200000007AAAAAAAA /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0DE000200000008AAAAAAAA /* SlackingWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = SlackingWidget.entitlements; sourceTree = "<group>"; };
 		C1DF19E2ABFE7D80A41441FB /* SalaryWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = SalaryWidget.entitlements; sourceTree = "<group>"; };
 		EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SalaryWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -73,6 +113,16 @@
 				B6094D3B2E1C93837B5DDF73 /* Cocoa.framework in Frameworks */,
 				E2F5A301C0920EAFEAD3DF9B /* SwiftUI.framework in Frameworks */,
 				28AA1668EC74505192C460B6 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0DE000500000001AAAAAAAA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0DE000100000009AAAAAAAA /* WidgetKit.framework in Frameworks */,
+				C0DE00010000000AAAAAAAAA /* SwiftUI.framework in Frameworks */,
+				C0DE00010000000BAAAAAAAA /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				491328310628456A3E60BA06 /* Config.swift */,
+				C0DE000200000001AAAAAAAA /* SlackingStore.swift */,
 			);
 			path = Shared;
 			sourceTree = SOURCE_ROOT;
@@ -102,8 +153,12 @@
 			children = (
 				BD74636E0A6C7B2ECA5BDFFA /* macosAppApp.swift */,
 				21F747B928898AA5190A174F /* ContentView.swift */,
+				A1B2C3D402000001E2F3A4B5 /* SidebarView.swift */,
+				A1B2C3D402000002E2F3A4B5 /* WidgetPreviewView.swift */,
+				A1B2C3D403000001E2F3A4B5 /* SettingsSections */,
 				4FB42B11D1238DC20602FAF4 /* macosApp.entitlements */,
 				3D6B06AACE00CBB4B98FAD08 /* NotificationManager.swift */,
+				C0DE000200000003AAAAAAAA /* SlackingTracker.swift */,
 			);
 			path = macosApp;
 			sourceTree = "<group>";
@@ -126,6 +181,29 @@
 			name = "OS X";
 			sourceTree = "<group>";
 		};
+		A1B2C3D403000001E2F3A4B5 /* SettingsSections */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D402000003E2F3A4B5 /* BasicSettingsView.swift */,
+				A1B2C3D402000004E2F3A4B5 /* WorkTimeSettingsView.swift */,
+				A1B2C3D402000005E2F3A4B5 /* WorkModeSettingsView.swift */,
+				A1B2C3D402000006E2F3A4B5 /* UpdateView.swift */,
+				A1B2C3D402000007E2F3A4B5 /* OtherSettingsView.swift */,
+				C0DE000200000004AAAAAAAA /* SlackingSettingsView.swift */,
+			);
+			path = SettingsSections;
+			sourceTree = "<group>";
+		};
+		C0DE000900000001AAAAAAAA /* SlackingWidget */ = {
+			isa = PBXGroup;
+			children = (
+				C0DE000200000005AAAAAAAA /* SlackingWidget.swift */,
+				C0DE000200000007AAAAAAAA /* Info.plist */,
+				C0DE000200000008AAAAAAAA /* SlackingWidget.entitlements */,
+			);
+			path = SlackingWidget;
+			sourceTree = "<group>";
+		};
 		E0AFB7CFFC438A8FE0E97290 /* SalaryWidget */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +219,7 @@
 			children = (
 				4E892004316B8500E2EBC98E /* 我爱上班.app */,
 				EDC6D6A1B3B61F5F6F9B98EA /* SalaryWidget.appex */,
+				C0DE000200000006AAAAAAAA /* SlackingWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -154,6 +233,7 @@
 				1DE4C701095807AE4F6CA339 /* macosApp */,
 				E0AFB7CFFC438A8FE0E97290 /* SalaryWidget */,
 				105077BB00CC0EF171AAA269 /* Shared */,
+				C0DE000900000001AAAAAAAA /* SlackingWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -190,11 +270,29 @@
 			);
 			dependencies = (
 				84AD423A1A94A22E42F47500 /* PBXTargetDependency */,
+				C0DE000C00000001AAAAAAAA /* PBXTargetDependency */,
 			);
 			name = macosApp;
 			productName = ILoveWork;
 			productReference = 4E892004316B8500E2EBC98E /* 我爱上班.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C0DE000400000001AAAAAAAA /* SlackingWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0DE000600000001AAAAAAAA /* Build configuration list for PBXNativeTarget "SlackingWidget" */;
+			buildPhases = (
+				C0DE000A00000001AAAAAAAA /* Sources */,
+				C0DE000500000001AAAAAAAA /* Frameworks */,
+				C0DE000B00000001AAAAAAAA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SlackingWidget;
+			productName = SlackingWidget;
+			productReference = C0DE000200000006AAAAAAAA /* SlackingWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -218,6 +316,10 @@
 						DevelopmentTeam = PXL9279SFY;
 						ProvisioningStyle = Automatic;
 					};
+					C0DE000400000001AAAAAAAA = {
+						DevelopmentTeam = PXL9279SFY;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = FCF6876F8CAA99D2FF18D54A /* Build configuration list for PBXProject "macosApp" */;
@@ -235,6 +337,7 @@
 			targets = (
 				78B35F20D51FF0CD73CA6259 /* macosApp */,
 				52CC4E22B338766334C13F0B /* SalaryWidget */,
+				C0DE000400000001AAAAAAAA /* SlackingWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -256,6 +359,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0DE000B00000001AAAAAAAA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -265,6 +375,7 @@
 			files = (
 				826A7EFE34BEE23385F9F664 /* SalaryWidget.swift in Sources */,
 				92856EEBFBBBD97950069E6D /* Config.swift in Sources */,
+				C0DE000100000002AAAAAAAA /* SlackingStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,6 +387,26 @@
 				2B54683B7551ACB1BE9DE22B /* ContentView.swift in Sources */,
 				E8D5458BDE19394C575C8A78 /* Config.swift in Sources */,
 				42A32D2562173B6DCC47764B /* NotificationManager.swift in Sources */,
+				A1B2C3D401000001E2F3A4B5 /* SidebarView.swift in Sources */,
+				A1B2C3D401000002E2F3A4B5 /* WidgetPreviewView.swift in Sources */,
+				A1B2C3D401000003E2F3A4B5 /* BasicSettingsView.swift in Sources */,
+				A1B2C3D401000004E2F3A4B5 /* WorkTimeSettingsView.swift in Sources */,
+				A1B2C3D401000005E2F3A4B5 /* WorkModeSettingsView.swift in Sources */,
+				A1B2C3D401000006E2F3A4B5 /* UpdateView.swift in Sources */,
+				A1B2C3D401000007E2F3A4B5 /* OtherSettingsView.swift in Sources */,
+				C0DE000100000001AAAAAAAA /* SlackingStore.swift in Sources */,
+				C0DE000100000003AAAAAAAA /* SlackingTracker.swift in Sources */,
+				C0DE000100000004AAAAAAAA /* SlackingSettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0DE000A00000001AAAAAAAA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0DE000100000005AAAAAAAA /* SlackingWidget.swift in Sources */,
+				C0DE000100000007AAAAAAAA /* Config.swift in Sources */,
+				C0DE000100000008AAAAAAAA /* SlackingStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +419,12 @@
 			target = 52CC4E22B338766334C13F0B /* SalaryWidget */;
 			targetProxy = 6B500063DD5E40731A6AD917 /* PBXContainerItemProxy */;
 		};
+		C0DE000C00000001AAAAAAAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SlackingWidget;
+			target = C0DE000400000001AAAAAAAA /* SlackingWidget */;
+			targetProxy = C0DE000300000001AAAAAAAA /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -296,11 +433,13 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = SalaryWidget/SalaryWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = PXL9279SFY;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SalaryWidget/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos.SalaryWidget;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -389,7 +528,7 @@
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
 				PRODUCT_NAME = "我爱上班";
 				REGISTER_APP_GROUPS = YES;
@@ -403,11 +542,13 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = SalaryWidget/SalaryWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 122;
 				DEVELOPMENT_TEAM = PXL9279SFY;
 				ENABLE_APP_SANDBOX = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = SalaryWidget/Info.plist;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos.SalaryWidget;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -468,6 +609,44 @@
 			};
 			name = Release;
 		};
+		C0DE000D00000001AAAAAAAA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SlackingWidget/SlackingWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 122;
+				DEVELOPMENT_TEAM = PXL9279SFY;
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SlackingWidget/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.2.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos.SlackingWidget;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C0DE000D00000002AAAAAAAA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SlackingWidget/SlackingWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 122;
+				DEVELOPMENT_TEAM = PXL9279SFY;
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SlackingWidget/Info.plist;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.2.2;
+				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos.SlackingWidget;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		EDE7EE1FE4C30F640E841525 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -488,7 +667,7 @@
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 2.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.suseoaa.ilovework.macos;
 				PRODUCT_NAME = "我爱上班";
 				REGISTER_APP_GROUPS = YES;
@@ -514,6 +693,15 @@
 			buildConfigurations = (
 				0930CCAABB626C514C6F27C2 /* Release */,
 				EDE7EE1FE4C30F640E841525 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0DE000600000001AAAAAAAA /* Build configuration list for PBXNativeTarget "SlackingWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0DE000D00000001AAAAAAAA /* Debug */,
+				C0DE000D00000002AAAAAAAA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

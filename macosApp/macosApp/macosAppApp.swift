@@ -17,6 +17,7 @@ struct macosAppApp: App {
                             NotificationManager.shared.scheduleReminders(config: config)
                         }
                     }
+                    SlackingTracker.shared.startTracking()
                 }
                 .onReceive(widgetRefreshTimer) { _ in
                     WidgetCenter.shared.reloadAllTimelines()
@@ -27,7 +28,7 @@ struct macosAppApp: App {
                 }
         }
         .windowResizability(.contentSize)
-        .defaultSize(width: 480, height: 580)
+        .defaultSize(width: 1080, height: 640)
     }
 }
 

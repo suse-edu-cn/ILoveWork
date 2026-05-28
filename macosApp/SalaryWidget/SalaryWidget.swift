@@ -5,11 +5,9 @@ import SwiftUI
 
 struct SalaryEntry: TimelineEntry {
     let date: Date
-    let formula: ConfigStore.SalaryFormula
-    // Pre-computed display values (computed at entry creation time, zero I/O at render)
     let earnedAmount: Double
     let isWorking: Bool
-    let dayType: ConfigStore.DayType
+    let dayType: String
     let hourlyWage: Double
     let secondsUntilOff: TimeInterval
     let daysUntilPayday: Int
@@ -47,44 +45,23 @@ struct SalaryProvider: TimelineProvider {
 
     private func makeEntry(date: Date, formula: ConfigStore.SalaryFormula, cfg: WorkConfig) -> SalaryEntry {
         let (earned, isWorking, dayType, hourlyWage, secondsUntilOff) = formula.earned(at: date)
+        let dayTypeString: String
+        switch dayType {
+        case .workday:    dayTypeString = "workday"
+        case .restPaid:   dayTypeString = "restPaid"
+        case .restUnpaid: dayTypeString = "restUnpaid"
+        }
         return SalaryEntry(
             date: date,
-            formula: formula,
             earnedAmount: earned,
             isWorking: isWorking,
-            dayType: dayType,
+            dayType: dayTypeString,
             hourlyWage: hourlyWage,
             secondsUntilOff: secondsUntilOff,
-            daysUntilPayday: computeDaysUntilPayday(payday: cfg.payday, from: date)
+            daysUntilPayday: ConfigStore.computeDaysUntilPayday(payday: cfg.payday, from: date)
         )
     }
     
-    private func computeDaysUntilPayday(payday: Int, from date: Date) -> Int {
-        let cal = Calendar.current
-        let currentDay = cal.component(.day, from: date)
-        
-        var targetMonth = cal.component(.month, from: date)
-        var targetYear = cal.component(.year, from: date)
-        
-        if currentDay > payday {
-            targetMonth += 1
-            if targetMonth > 12 {
-                targetMonth = 1
-                targetYear += 1
-            }
-        }
-        
-        var comps = DateComponents(year: targetYear, month: targetMonth, day: payday)
-        if !comps.isValidDate(in: cal) {
-            let range = cal.range(of: .day, in: .month, for: cal.date(from: DateComponents(year: targetYear, month: targetMonth))!)!
-            comps.day = range.count
-        }
-        let targetDate = cal.date(from: comps)!
-        let startOfToday = cal.startOfDay(for: date)
-        let startOfTarget = cal.startOfDay(for: targetDate)
-        
-        return cal.dateComponents([.day], from: startOfToday, to: startOfTarget).day ?? 0
-    }
 }
 
 // MARK: - Widget View
@@ -123,7 +100,6 @@ struct SalaryWidgetView: View {
 
     // MARK: - Small
 
-    @ViewBuilder
     var smallView: some View {
         VStack(spacing: 4) {
             HStack(spacing: 4) {
@@ -149,7 +125,7 @@ struct SalaryWidgetView: View {
                 Text(String(format: "时薪: ¥%.2f", entry.hourlyWage))
                     .font(.system(size: 10))
                     .foregroundStyle(textSecondary)
-                    
+
                 Text(entry.daysUntilPayday == 0 ? "💰 发薪啦" : "距发薪: \(entry.daysUntilPayday)天")
                     .font(.system(size: 10).bold())
                     .foregroundStyle(.blue)
@@ -160,7 +136,7 @@ struct SalaryWidgetView: View {
                     .font(.system(size: 10))
                     .foregroundStyle(textSecondary)
                     .monospacedDigit()
-            } else if entry.dayType == .workday {
+            } else if entry.dayType == "workday" {
                 Text("打卡下班啦！")
                     .font(.system(size: 10))
                     .foregroundStyle(textSecondary)
@@ -171,7 +147,6 @@ struct SalaryWidgetView: View {
 
     // MARK: - Medium
 
-    @ViewBuilder
     var mediumView: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
@@ -203,7 +178,7 @@ struct SalaryWidgetView: View {
                         .font(.caption2)
                         .foregroundStyle(textSecondary)
                         .monospacedDigit()
-                } else if entry.dayType == .workday {
+                } else if entry.dayType == "workday" {
                     Text("打卡下班啦！")
                         .font(.caption2)
                         .foregroundStyle(textSecondary)
@@ -220,7 +195,7 @@ struct SalaryWidgetView: View {
                         .trim(from: 0, to: paydayProgressRatio)
                         .stroke(Color.blue, style: StrokeStyle(lineWidth: 4, lineCap: .round))
                         .rotationEffect(.degrees(-90))
-                    
+
                     VStack(spacing: -2) {
                         Text("\(entry.daysUntilPayday)")
                             .font(.system(size: 16, weight: .bold, design: .rounded))
@@ -231,7 +206,7 @@ struct SalaryWidgetView: View {
                     }
                 }
                 .frame(width: 44, height: 44)
-                
+
                 Text("发薪倒计时")
                     .font(.system(size: 9))
                     .foregroundStyle(textSecondary)
@@ -243,18 +218,10 @@ struct SalaryWidgetView: View {
 
     private var statusLabel: String {
         switch entry.dayType {
-        case .workday:    return entry.isWorking ? "工作中" : "休息中"
-        case .restPaid:   return "休息中 (带薪)"
-        case .restUnpaid: return "休息中 (无薪)"
+        case "workday":    return entry.isWorking ? "工作中" : "休息中"
+        case "restPaid":   return "休息中 (带薪)"
+        default:           return "休息中 (无薪)"
         }
-    }
-
-    private var progressRatio: Double {
-        if entry.dayType != .workday { return 0 }
-        if entry.secondsUntilOff <= 0 { return 1.0 }
-
-        guard entry.formula.dailySalary > 0 else { return 0 }
-        return min(entry.earnedAmount / entry.formula.dailySalary, 1.0)
     }
 
     private var paydayProgressRatio: Double {

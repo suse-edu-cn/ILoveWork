@@ -16,8 +16,6 @@ kotlin {
         }
     }
 
-    jvm()
-
     androidLibrary {
         namespace = "com.suseoaa.ilovework.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()

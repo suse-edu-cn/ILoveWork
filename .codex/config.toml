@@ -1,0 +1,2 @@
+[mcp_servers.oa]
+url = "http://localhost:8080/mcp/admin"
