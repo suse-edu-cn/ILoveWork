@@ -118,55 +118,20 @@ jobs:
             mv "$file" "$APK_DIR/我爱上班-Android-${{ steps.check_version.outputs.tag }}.apk"
           done
 
-      - name: Import macOS Signing Certificate
-        if: steps.check_version.outputs.changed == 'true'
-        env:
-          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
-          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
-        run: |
-          # 创建临时钥匙串
-          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
-          KEYCHAIN_PWD=$(openssl rand -hex 16)
-          security create-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN_PATH"
-          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
-          security unlock-keychain -p "$KEYCHAIN_PWD" "$KEYCHAIN_PATH"
-
-          # 导入证书
-          CERT_PATH=$RUNNER_TEMP/certificate.p12
-          echo "$MACOS_CERTIFICATE" | base64 --decode > "$CERT_PATH"
-          security import "$CERT_PATH" -P "$MACOS_CERTIFICATE_PWD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
-          security set-key-partition-list -S apple-tool:,apple: -k "$KEYCHAIN_PWD" "$KEYCHAIN_PATH"
-          security list-keychains -d user -s "$KEYCHAIN_PATH" login.keychain-db
-
-          # 获取签名身份
-          IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep "Apple Development" | head -1 | awk -F'"' '{print $2}')
-          echo "SIGNING_IDENTITY=$IDENTITY" >> $GITHUB_ENV
-          echo "KEYCHAIN_PATH=$KEYCHAIN_PATH" >> $GITHUB_ENV
-          echo "KEYCHAIN_PWD=$KEYCHAIN_PWD" >> $GITHUB_ENV
-          echo "使用签名身份: $IDENTITY"
-
       - name: Build macOS App & Package DMG
         if: steps.check_version.outputs.changed == 'true'
         run: |
           cd macosApp
 
-          # 选择签名方式：优先使用开发者证书，没有则用 ad-hoc
-          if [ -n "$SIGNING_IDENTITY" ]; then
-            echo "使用开发者证书签名: $SIGNING_IDENTITY"
-            SIGN_ARGS="CODE_SIGN_IDENTITY=\"$SIGNING_IDENTITY\" CODE_SIGNING_REQUIRED=YES OTHER_CODE_FLAGS=--keychain=\"$KEYCHAIN_PATH\""
-          else
-            echo "未配置签名证书，使用 ad-hoc 签名"
-            SIGN_ARGS="CODE_SIGN_IDENTITY=\"-\" CODE_SIGNING_REQUIRED=YES"
-          fi
-
-          # 使用最新可用的 Xcode
+          # 使用最新可用的 Xcode（确保有最新 SDK）
           LATEST_XCODE=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)
           if [ -n "$LATEST_XCODE" ]; then
             sudo xcode-select -s "$LATEST_XCODE"
             echo "使用 Xcode: $LATEST_XCODE"
           fi
 
-          eval xcodebuild clean build -project macosApp.xcodeproj -scheme macosApp -configuration Release $SIGN_ARGS -derivedDataPath derived_data
+          # ad-hoc 签名
+          xcodebuild clean build -project macosApp.xcodeproj -scheme macosApp -configuration Release CODE_SIGN_IDENTITY="-" CODE_SIGNING_REQUIRED=YES -derivedDataPath derived_data
 
           # 找到构建好的 .app 文件
           APP_PATH=$(find derived_data/Build/Products/Release -name "*.app" | head -n 1)
@@ -176,13 +141,6 @@ jobs:
 
           # 制作 DMG
           hdiutil create -volname "$APP_NAME" -srcfolder "$APP_PATH" -ov -format UDZO "../我爱上班-macOS-${{ steps.check_version.outputs.tag }}.dmg"
-
-      - name: Cleanup Keychain
-        if: always()
-        run: |
-          if [ -n "$KEYCHAIN_PATH" ] && [ -f "$KEYCHAIN_PATH" ]; then
-            security delete-keychain "$KEYCHAIN_PATH" 2>/dev/null || true
-          fi
 
       - name: Publish GitHub Release
         if: steps.check_version.outputs.changed == 'true'
